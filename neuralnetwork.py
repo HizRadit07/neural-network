@@ -32,3 +32,9 @@ class NeuralNetwork:
         #returns a list of result of predict
         #nanti di akhir, utk perhitungan, biasanya di average
         return result
+
+    def get_neuron_values_per_layer(self,):
+        output = []
+        for layer in self.layers:
+            output.append(layer.get_neuron_output_values())
+        return output

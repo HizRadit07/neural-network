@@ -11,6 +11,7 @@ class Layer:
     trainable: bool = None
     name: str = None
     layer_bias: float = 1
+    layer_outputs: list[float] = None
 
     def __init__(self, numNeurons, algorithm, trainable, name, layer_bias=1) -> None:
         self.algorithm = algorithm
@@ -46,11 +47,30 @@ class Layer:
     def calculate_outputs(self, inputArr: list[float]) -> list[float]:
         output = [self.layer_bias] if self.layer_bias else []
         
-        if self.name == "input layer":
+        if self.name =="input layer":
             output.extend(inputArr)
         else:
             for neuron in self.neurons:
                 output.append(neuron.calculate_output(inputArr))
 
+        self.layer_outputs = output
+
         return output
-    
+
+    #get current values stored in neurons
+    def get_neuron_output_values(self,) -> list[float]:
+        output = []
+        for neuron in self.neurons:
+            output.append(neuron.output)
+        return output
+
+    def find_error_term(self, inputArr, targetArr):
+        if self.name == "output layer":
+            outputList = self.layer_outputs
+            sumErrorTerm = 0
+            for i in range (len(targetArr)):
+                sumErrorTerm += (targetArr[i]-outputList[i])**2
+            sumErrorTerm *= 0.5
+            return sumErrorTerm
+        else:
+            pass

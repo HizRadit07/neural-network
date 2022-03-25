@@ -30,12 +30,9 @@ arr1 = [1,2,3]
 arr2 = [1,2,3]
 #input bias value in the input
 # res = nn.batch_predict([[0.0,0.0], [0.0,1.0], [1.0,0.0], [1.0,1.0]])
-res = nn.predict([0.0, 0.0])
+res = nn.predict([1.0, 0.0])
 #res = sumproduct(arr1, arr2)
-#print(res)
+print(res)
 
-res2 = nn.get_neuron_values_per_layer()
-print(res2)
-
-err = nn.layers[2].find_error_term([0.0, 0.0], [0.0])
-#print(err)
+#err = nn.layers[3].find_error_term([0.0, 0.0], [0,0])
+# print(err)
