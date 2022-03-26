@@ -1,13 +1,17 @@
 
 
+from re import I
 from unittest import result
+from algorithms import sumIntAndArray, sumproduct
 from layer import Layer
-
+from neuron import Neuron
 
 class NeuralNetwork:
     #attributes
     layers: list[Layer] = None
-    
+    #current backpropErrTerms
+    errTerm: list[float] = None
+
     #constructor
     def __init__(self) -> None:
         self.layers = []
@@ -33,8 +37,55 @@ class NeuralNetwork:
         #nanti di akhir, utk perhitungan, biasanya di average
         return result
 
-    def get_neuron_values_per_layer(self,):
-        output = []
-        for layer in self.layers:
-            output.append(layer.get_neuron_output_values())
-        return output
+    #find unit gradient of neural network
+    #output is an array that corresponds to all weight in the neural network
+    def find_unit_gradient(self, target):
+        grad = []
+        backPropErrTerm = [] #init awal
+        nextlayer = None
+        finalErrTermArr = []
+
+        for layer in reversed(self.layers):
+            #first check is always output layer, so its fine to init nextlayer in the bottom
+            if layer.name == "output layer": #for output error
+                i = 0
+                for neuron in layer.neurons:
+                    for x in neuron.x:
+                        grad.append(-1 * (target[i]-neuron.output) * neuron.count_derivative(neuron.output) * x)
+                        backPropErrTerm.append(-1 * (target[i]-neuron.output) * neuron.count_derivative(neuron.output))
+                    i+=1
+                finalErrTermArr.extend(backPropErrTerm)
+            else: #hidden or input layer
+                #pass
+                tempBackPropErrArr = []
+                if layer.name == "input layer": #pass input layer
+                    break
+                for neuron in layer.neurons:
+                    i = 0
+                    for x in neuron.x:
+                        nextLayerWeights = nextlayer.get_all_neuron_weight_at_index(i)
+                        grad.append(-1 * neuron.count_derivative(neuron.output) * sumIntAndArray(backPropErrTerm[i], nextLayerWeights) * x)
+                        tempBackPropErrArr.append(-1 * neuron.count_derivative(neuron.output) * sumIntAndArray(backPropErrTerm[i], nextLayerWeights))
+                    i+=1
+                backPropErrTerm = tempBackPropErrArr
+                finalErrTermArr.extend(backPropErrTerm)
+            #set the next layer = now layer, for the next iteration
+            nextlayer = layer
+        #save errTerm array in attribute
+        self.errTerm = finalErrTermArr
+        return grad
+
+    #function to find deltaweight
+    def find_delta_weight(self, gradArr, learn_rate):
+        deltaweight = []
+        for i in range (len(gradArr)):
+            deltaweight.append(gradArr[i] * self.errTerm[i] * )
+        return 0
+
+    #update all weights by input
+    #layers is reversed, because input should be a reversed array containing negative gradient
+    def update_weights(self, input):
+        for layer in reversed(self.layers):
+            for neuron in layer.neurons:
+                for i in range(len(neuron.weight)):
+                    neuron.weight[i] += input[i]

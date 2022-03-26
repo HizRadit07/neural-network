@@ -7,6 +7,13 @@ def sumproduct(arr1: list[float], arr2: list[float]) -> float:
         sum += arr1[i] * arr2[i]
     return sum
 
+#return sum of an int and array, misal 1 * [1,2,3] = 1*1 + 1*2 + 1*3
+def sumIntAndArray(integer, array):
+    sum = 0
+    for item in array:
+        sum+= integer * item
+    return sum
+
 def sigmoid(x):
     return 1/(1+math.exp(-1*x))
 

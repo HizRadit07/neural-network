@@ -26,16 +26,16 @@ nn.add_layer(input_layer)
 nn.add_layer(hidden_layer1)
 nn.add_layer(output_layer)
 
-arr1 = [1,2,3]
-arr2 = [1,2,3]
-#input bias value in the input
-# res = nn.batch_predict([[0.0,0.0], [0.0,1.0], [1.0,0.0], [1.0,1.0]])
 res = nn.predict([0.0, 0.0])
-#res = sumproduct(arr1, arr2)
-#print(res)
+print(res)
 
-res2 = nn.get_neuron_values_per_layer()
+grad = nn.find_unit_gradient([0.0])
+
+nn.update_weights(grad)
+
+for layer in nn.layers:
+    for neuron in layer.neurons:
+        print(neuron.weight)
+
+res2 = nn.predict([0.0, 0.0])
 print(res2)
-
-err = nn.layers[2].find_error_term([0.0, 0.0], [0.0])
-#print(err)

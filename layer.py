@@ -1,6 +1,7 @@
 #definition of layer class
 
 
+from select import select
 from neuron import Neuron
 
 
@@ -57,20 +58,10 @@ class Layer:
 
         return output
 
-    #get current values stored in neurons
-    def get_neuron_output_values(self,) -> list[float]:
+    #return neuron weight at idx, misal idx = 1, and neuron ada 5
+    # foreach neuron, return array of neuron.weights[1] gitu
+    def get_all_neuron_weight_at_index(self, idx):
         output = []
         for neuron in self.neurons:
-            output.append(neuron.output)
+            output.append(neuron.weight[idx])
         return output
-
-    def find_error_term(self, inputArr, targetArr):
-        if self.name == "output layer":
-            outputList = self.layer_outputs
-            sumErrorTerm = 0
-            for i in range (len(targetArr)):
-                sumErrorTerm += (targetArr[i]-outputList[i])**2
-            sumErrorTerm *= 0.5
-            return sumErrorTerm
-        else:
-            pass

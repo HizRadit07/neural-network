@@ -1,6 +1,6 @@
 #definition of a neuron class
 
-from algorithms import derLinear, derSigmoid, relu, sigmoid, sumproduct
+from algorithms import derLinear, derRelu, derSigmoid, relu, sigmoid, sumproduct
 
 
 class Neuron:
@@ -10,6 +10,8 @@ class Neuron:
     weight: list[float] = None
     #output value
     output: float = None
+    # x value / input value
+    x: list[float] = None
 
     #constructor
     def __init__(self, algorithm: str, weight: list[float]) -> None:
@@ -29,7 +31,8 @@ class Neuron:
             return inputArr
 
         sumweights = sumproduct(self.weight, inputArr)
-
+        self.x = inputArr
+        
         if self.algorithm.lower() == "linear":
             self.output = sumweights
             return sumweights
@@ -42,12 +45,16 @@ class Neuron:
         else:
             return inputArr
 
-    def calculate_derivative(self, ):
+    #count derivative
+    def count_derivative(self, output):
         if self.algorithm.lower() == "linear":
-            return derLinear()
+            return derLinear(output)
         elif self.algorithm.lower() == "sigmoid":
-            return derSigmoid()
-
+            return derSigmoid(output)
+        elif self.algorithm.lower() == "relu":
+            return derRelu(output)
+        else:
+            return output
     
     
     
