@@ -55,6 +55,10 @@ class Neuron:
             return derRelu(output)
         else:
             return output
+            
+    def printInput(self):
+        print(self.x)
+    
     
     
     

@@ -73,19 +73,19 @@ class NeuralNetwork:
             nextlayer = layer
         #save errTerm array in attribute
         self.errTerm = finalErrTermArr
+        print(finalErrTermArr)
         return grad
 
-    #function to find deltaweight
-    def find_delta_weight(self, gradArr, learn_rate):
-        deltaweight = []
-        for i in range (len(gradArr)):
-            deltaweight.append(gradArr[i] * self.errTerm[i] * )
-        return 0
+    #print all neuron inputs
+    def printAllNeuronInput(self):
+        for layer in self.layers:
+            for neuron in layer.neurons:
+                neuron.printInput()
 
     #update all weights by input
     #layers is reversed, because input should be a reversed array containing negative gradient
-    def update_weights(self, input):
+    def update_weights(self, input, learn_rate):
         for layer in reversed(self.layers):
             for neuron in layer.neurons:
                 for i in range(len(neuron.weight)):
-                    neuron.weight[i] += input[i]
+                    neuron.weight[i] += learn_rate * input[i] * neuron.x[i]
